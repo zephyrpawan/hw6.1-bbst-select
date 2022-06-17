@@ -87,7 +87,7 @@ Node *createNode(int value);
 Node *rotateLeft(Node *node);
 Node *rotateRight(Node *node);
 Node *insert(Node *node, int value);
-void inOrderTraversal(Node *node);
+void inOrderTraversal(Node *node, vector<int> *vec);
 
 int main(int argc, char const *argv[])
 {
@@ -110,27 +110,29 @@ int main(int argc, char const *argv[])
         }
         if (lineNum == 2) {
             ith = stoi(line);
+            break;
         }
         lineNum++;
     }
 
     Node *node = NULL;
 
-    //for loop from vector
+    for (int i=0; i<numbers.size(); i++) {
+        node = insert(node, numbers.at(i));
+    }
 
+    vector<int> sortedValues;
+    inOrderTraversal(node, &sortedValues);
 
-    node = insert(node, 10);
-    node = insert(node, 20);
-    node = insert(node, 30);
-    node = insert(node, 40);
-    node = insert(node, 50);
-    node = insert(node, 25);
-
-    inOrderTraversal(node);
-
-    return 0;
+    cout << sortedValues.at(ith-1) << '\n';
 }
 
+//***************************************************************************************************
+// description: determines the height of the tree with root at the input node                       *
+// return: height of the tree with given input as root node                                         *
+// precondition:  valid not NULL input Node                                                         *
+// postcondition: return height                                                                     *
+//***************************************************************************************************
 int getTreeHeight(Node *node)
 {
     if (node == NULL)
@@ -140,6 +142,14 @@ int getTreeHeight(Node *node)
     return node->height;
 }
 
+//***************************************************************************************************
+// description: determines the balance factor to adhere with BBST invarient.                        *
+//              Balance factor =  difference in height of left and right child nodes                *
+//              BBST Invarient: Balance factor can only be either -1, 0 or 1 for a BST to be BBST   *
+// return: balance factor as an integer                                                             *
+// precondition:  valid not NULL input Node                                                         *
+// postcondition: return balance factor                                                             *
+//***************************************************************************************************
 int getBalanceFactor(Node *node)
 {
     if (node == NULL)
@@ -149,6 +159,12 @@ int getBalanceFactor(Node *node)
     return getTreeHeight(node->leftChild) - getTreeHeight(node->rightChild);
 }
 
+//***************************************************************************************************
+// description: Helper function that returns larger integer out of two given integers               *
+// return: maximum of two integers                                                                  *
+// precondition:  input be exactly 2 int                                                            *
+// postcondition: returns larger of the two inputs                                                  *
+//***************************************************************************************************
 int max(int a, int b)
 {
     if (a > b)
@@ -158,12 +174,24 @@ int max(int a, int b)
     return b;
 }
 
+//***************************************************************************************************
+// description: creates a new Node object for the given numeric value                               *
+// return: Node object that hold the input integer as its value                                     *
+// precondition:  integer input is required                                                         *
+// postcondition: return created node                                                               *
+//***************************************************************************************************
 Node *createNode(int value)
 {
     Node *node = new Node(value);
-    return node;
+    return node; 
 }
 
+//***************************************************************************************************
+// description: left rotates the subtree at a given Node                                            *
+// return: pointer to the new root node after left rotating a subtree with input node as its root   *
+// precondition:  valid not NULL input Node                                                         *
+// postcondition: returns pointer to the new rotated tree's root node                               *
+//***************************************************************************************************
 Node *rotateLeft(Node *node)
 {
     Node *newRoot = node->rightChild;
@@ -176,6 +204,12 @@ Node *rotateLeft(Node *node)
     return newRoot;
 }
 
+//***************************************************************************************************
+// description: right rotates the subtree at a given Node                                           *
+// return: pointer to the new root node after right rotating a subtree with input node as its root  *
+// precondition:  valid not NULL input Node                                                         *
+// postcondition: returns pointer to the new rotated tree's root node                               *
+//***************************************************************************************************
 Node *rotateRight(Node *node)
 {
     Node *newRoot = node->leftChild;
@@ -188,9 +222,15 @@ Node *rotateRight(Node *node)
     return newRoot;
 }
 
+//***************************************************************************************************
+// description: creates a new node obj from given value and inserts into the specified subtree      *
+//              with input node as a root and returns new root node of subtree                      *
+// return: pointer to the new root node after inserting the new node created with input value       *
+// precondition: valid not NULL input Node andvalue such that no existing nodes have the same value *
+// postcondition: returns poniter to the new root node after insertion                              *
+//***************************************************************************************************
 Node *insert(Node *node, int value)
 {
-
     if (node == NULL)
     {
         return (createNode(value));
@@ -241,12 +281,19 @@ Node *insert(Node *node, int value)
     return node;
 }
 
-void inOrderTraversal(Node *node)
+//***************************************************************************************************
+// description: In-order traversal of the BBST with root as input node till ith element             *
+//              https://www.youtube.com/watch?v=k7GkEbECZK0&t=3s                                    *
+// return: void                                                                                     *
+// precondition:  Input node is the root of BBST                                                    *
+// postcondition: updates the input vector with in-order traversal node values                      *
+//***************************************************************************************************
+void inOrderTraversal(Node *node, vector<int> *vec)
 {
     if (node != NULL)
     {
-        inOrderTraversal(node->leftChild);
-        cout << node->value << " ";
-        inOrderTraversal(node->rightChild);
+        inOrderTraversal(node->leftChild, vec);
+        (*vec).push_back(node->value);
+        inOrderTraversal(node->rightChild, vec);
     }
 }
