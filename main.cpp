@@ -88,6 +88,7 @@ Node *rotateLeft(Node *node);
 Node *rotateRight(Node *node);
 Node *insert(Node *node, int value);
 void inOrderTraversal(Node *node, vector<int> *vec);
+void selectStatistic(Node *node, int ith);
 
 int main(int argc, char const *argv[])
 {
@@ -97,6 +98,8 @@ int main(int argc, char const *argv[])
 
     int lineNum = 1;
     string line;
+
+    //read from std:cin to populate the number vector and ith order
     while (getline(cin, line))
     {
         if (lineNum == 1)
@@ -108,23 +111,23 @@ int main(int argc, char const *argv[])
                 numbers.push_back(stoi(number));
             }
         }
-        if (lineNum == 2) {
+        if (lineNum == 2)
+        {
             ith = stoi(line);
             break;
         }
         lineNum++;
     }
 
+    // initialize a node and make a BBST inserting all elements from input line 1
     Node *node = NULL;
-
-    for (int i=0; i<numbers.size(); i++) {
+    for (int i = 0; i < numbers.size(); i++)
+    {
         node = insert(node, numbers.at(i));
     }
 
-    vector<int> sortedValues;
-    inOrderTraversal(node, &sortedValues);
-
-    cout << sortedValues.at(ith-1) << '\n';
+    // call the selectStatistic function to print the ith statistic
+    selectStatistic(node, ith);
 }
 
 //***************************************************************************************************
@@ -183,7 +186,7 @@ int max(int a, int b)
 Node *createNode(int value)
 {
     Node *node = new Node(value);
-    return node; 
+    return node;
 }
 
 //***************************************************************************************************
@@ -296,4 +299,17 @@ void inOrderTraversal(Node *node, vector<int> *vec)
         (*vec).push_back(node->value);
         inOrderTraversal(node->rightChild, vec);
     }
+}
+
+//***************************************************************************************************
+// description: selects the ith order statistic node value from a BBST and prints to console        *
+// return: void                                                                                     *
+// precondition:  BBST contains no duplicate values                                                 *
+// postcondition: updates the input vector with in-order traversal node values                      *
+//***************************************************************************************************
+void selectStatistic(Node *node, int ith)
+{
+    vector<int> sortedValues;
+    inOrderTraversal(node, &sortedValues);
+    cout << sortedValues.at(ith - 1) << '\n';
 }
