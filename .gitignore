@@ -1,0 +1,39 @@
+# Compiled source #
+###################
+*.com
+*.class
+*.dll
+*.exe
+*.o
+*.so
+*.mk
+*.project
+Debug/
+.vscode/
+compile_flags.txt
+main
+Member
+MemberGraph
+Utilities
+main.out
+input
+output
+output.txt
+
+# OS generated files #
+######################
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Output files #
+##################
+QuickSort10k_Sorted_random.txt
+QuickSort10kR_Sorted_random.txt
+QuickSort10kSemi2k_Sorted_random.txt
+QuickSort10kSemi4k_Sorted_random.txt
+.~lock.Pawan_Bhandari-Assignment5.1-The_UN_Problem.docx#
